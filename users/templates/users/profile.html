@@ -1,0 +1,143 @@
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<html>
+<head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico.png' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Disease Predictor and Specialist Recommender</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="fonts/stylesheet.css">
+    <link rel="stylesheet" href="{% static 'css/stylelogin.css' %}">
+</head>
+<body>
+	       <section id="nav-bar">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="{% url 'home' %}"><img src = "{% static 'images/logooo.png' %}" alt="image" /></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <i class="fa fa-bars"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                         {% if user.is_authenticated %}
+                      <a class="nav-link" href="{% url 'home' %}">HOME </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'checkdisease' %}">SEARCH DISEASE</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/specialist">SEARCH DOCTORS</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'feedback' %}">FEEDBACK</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/profile">PROFILE</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/logout">LOGOUT{{user.username}}</a>
+                    </li>
+                      {%else%}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'home' %}">HOME </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/about_us">ABOUT US</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/services">SERVICES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/specialist">DOCTORS</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/testimonials">TESTIMONIALS</a>
+                    </li>
+                      <li class="nav-item">
+                      <a class="nav-link" href="#user-profile">ACCOUNT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">CONTACT</a>
+                      </li>
+                      {%endif%}
+                  </ul>
+                </div>
+            </nav>
+           </section>
+           <style>
+                body{
+                  background: #FFFFFF;
+                }
+                label{
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+                input{
+                    margin-bottom: 0.5rem;
+                    padding: 0px 6px;
+                    width: 30%;
+                    height: 32px;
+                }
+
+               .updatebutton{
+                  background: linear-gradient(to right,#2895f1,#0060b1);
+                  color: white;
+                  font-weight: 600;
+                  border-radius: 0.6em;
+                  border: none;
+                  padding: 10px 40px;
+                  font-size: 20px;
+                  margin-bottom: 20px;
+                  margin-left: 8px;
+                  text-decoration: none;
+                  outline: none !important;
+               }
+               #updatebutton:hover{
+                      font-size: 21px;
+               }
+               .media{
+               align-items: center;
+               }
+               .account-img{
+                      outline: #0060b1;
+               }
+               .media-body{
+                      display: inline-block;
+                      margin: 30px 0px 0px 28px;
+               }
+           </style>
+           <div class="container">
+               <h1 class="title text-center">Personal Information</h1>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="media mb-4">
+                                <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+                                <div class="media-body mb-4">
+                                    <h2 class="account-heading">{{ user.username }}</h2>
+                                    <p class="text-secondary">{{ user.email }}</p>
+                                </div>
+                            </div>
+                            <form method ="POST" enctype="multipart/form-data">
+                                {% csrf_token%}
+                                <fieldset class="form-group">
+
+                                    {{ u_form | crispy }}
+                                    {{ p_form | crispy }}
+
+                                </fieldset>
+                                <div class="form-group">
+                                    <button class="updatebutton" type="submit">Update</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+           </div>
+</body>
+{% endblock content %}
+</html>
